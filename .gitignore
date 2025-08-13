@@ -1,0 +1,16 @@
+node_modules
+.next
+.env
+.env.local
+.env.development
+.env.test
+coverage
+build
+.prisma
+**/.DS_Store
+**/dist
+**/.turbo
+**/.vercel
+**/.vscode
+**/pnpm-lock.yaml
+**/yarn.lock
