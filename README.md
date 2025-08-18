@@ -25,6 +25,22 @@ This repository contains a minimal full-stack baseline for a coding interview. T
    ```
 5. Open the Web app: `http://localhost:3000`
 
+### Make usage (optional but convenient)
+
+This repository includes a Makefile with handy shortcuts that mirror the npm scripts. If you have `make` installed, you can use:
+
+- `make install`: Install all dependencies across workspaces.
+- `make env`: Create local env files from examples (`apps/api/.env`, `apps/web/.env.local`).
+- `make seed`: Push Prisma schema and seed the SQLite database.
+- `make dev`: Run types, API, and Web in watch/dev mode.
+- `make dev-api` / `make dev-web`: Run only API or only Web in dev mode.
+- `make build`: Build types, API, and Web.
+- `make start`: Start the built API and Web (production mode).
+- `make typecheck`: Type-check all workspaces.
+- `make clean`: Remove build artifacts.
+
+Tip: run `make help` to see all available targets.
+
 ## Architecture
 
 Monorepo layout:
@@ -139,7 +155,24 @@ Focus on correctness, readability, type-safety, accessibility, observability, an
 - Web `.env.local` (at `apps/web/.env.local`):
   - `NEXT_PUBLIC_API_URL="http://localhost:4000"`
 
+Using make to set up envs quickly:
+
+```bash
+make env
+```
+
+This copies example files to their runtime names if they don’t exist.
+
 ## Notes
 
 - Next.js 15 is used for the frontend.
 - Intentionally minimal baseline: candidates are expected to implement the majority of features and tooling.
+
+## Commands reference
+
+- Root dev: `npm run dev` — starts types, API, and Web in watch mode. Equivalent: `make dev`.
+- Root build: `npm run build` — builds `types`, then `api`, then `web`. Equivalent: `make build`.
+- Root start: `npm run start` — runs built API and Web. Equivalent: `make start`.
+- Typecheck: `npm run typecheck` — TypeScript checks across workspaces. Equivalent: `make typecheck`.
+- Seed DB: `npm run db:seed` — pushes schema and seeds SQLite. Equivalent: `make seed`.
+- Per‑workspace examples: `npm run -w apps/api dev`, `npm run -w apps/web build`. Equivalents: `make dev-api`, `make build-web`.
