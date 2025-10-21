@@ -10,7 +10,13 @@
     "lib": ["ES2022"],
     "esModuleInterop": true,
     "skipLibCheck": true,
-    "strict": true
+    "strict": true,
+
+    "baseUrl": "src",
+    "paths": {
+      "@/*": ["*"]
+    }
+
   },
   "include": ["src"],
   "exclude": ["prisma"]
