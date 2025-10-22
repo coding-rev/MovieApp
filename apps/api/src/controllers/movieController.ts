@@ -1,9 +1,7 @@
 import { Request, Response } from 'express';
 import { errorResponse, successResponse } from '@/utils/serverResponse'
 import { PaginationQuerySchema } from "@full-stack-interview/types";
-import {
-  listMovies, listGenres
-} from '@/services/index';
+import { listMovies, getMovie, createMovie, updateMovie, deleteMovie } from '@/services/index';
 
 class movieController {
 
@@ -21,18 +19,28 @@ class movieController {
         errorResponse(res, error);
     }
   }
- 
-  async listGenres(req: Request, res: Response): Promise<void> {
-    try {
-      const data = await listGenres();
-      successResponse(res, data.map((g) => g.genre).sort());
-    } catch (error: unknown) {
-      errorResponse(res, error);
-    }
+
+   async get(req: Request, res: Response): Promise<void|Response> {
+    const movie = await getMovie(req.params.id);
+    if (!movie) return res.status(404).json({ success: false, message: 'Not found' });
+    successResponse(res, movie);
   }
 
+  async create(req: Request, res: Response): Promise<void> {
+    const movie = await createMovie(req.body);
+    successResponse(res, movie, 201);
+  }
+
+  async update(req: Request, res: Response): Promise<void> {
+    const movie = await updateMovie(req.params.id, req.body);
+    successResponse(res, movie);
+  }
+
+  async delete(req: Request, res: Response): Promise<void> {
+    await deleteMovie(req.params.id);
+    successResponse(res, movie, 204);
+  }
 }
 
 const movie = new movieController();
-
 export { movie };
