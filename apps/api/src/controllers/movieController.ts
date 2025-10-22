@@ -22,7 +22,7 @@ class movieController {
 
    async get(req: Request, res: Response): Promise<void|Response> {
     const movie = await getMovie(req.params.id);
-    if (!movie) return res.status(404).json({ success: false, message: 'Not found' });
+    if (!movie) return errorResponse(res, "Not found", 404)
     successResponse(res, movie);
   }
 
