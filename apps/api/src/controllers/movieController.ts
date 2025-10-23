@@ -1,7 +1,7 @@
 import { Request, Response } from 'express';
 import { errorResponse, successResponse } from '@/utils/serverResponse'
-import { PaginationQuerySchema } from "@full-stack-interview/types";
 import { listMovies, getMovie, createMovie, updateMovie, deleteMovie } from '@/services/index';
+import { PaginationQuerySchema } from "@full-stack-interview/types";
 
 class movieController {
 

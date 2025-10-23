@@ -16,10 +16,7 @@ export function createApp(): Express {
     app.use(loggerMiddleware);
     app.use('', routers);
     app.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
-    app.get('/redoc', redoc({
-        title: 'Movies API Docs',
-        specUrl: '/docs/json',
-    }));
+    app.get('/redoc', redoc({title: 'Movies API Docs', specUrl: '/docs/json'}));
     app.get('/docs/json', (req, res) => res.json(swaggerSpec));
 
     app.use((req, res) => {
