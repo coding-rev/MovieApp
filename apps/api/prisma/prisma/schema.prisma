@@ -1,6 +1,6 @@
 generator client {
   provider = "prisma-client-js"
-   output   = "prisma"
+  output   = "prisma"
 }
 
 datasource db {
@@ -9,7 +9,7 @@ datasource db {
 }
 
 model Movie {
-  id        String @id @default(cuid())
+  id        String  @id @default(cuid())
   title     String
   year      Int
   genre     String

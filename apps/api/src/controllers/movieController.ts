@@ -1,7 +1,7 @@
 import { Request, Response } from 'express';
 import { errorResponse, successResponse } from '@/utils/serverResponse'
 import { listMovies, getMovie, createMovie, updateMovie, deleteMovie } from '@/services/index';
-import { PaginationQuerySchema } from "@full-stack-interview/types";
+import { PaginationQuerySchema, PaginationQuery } from "@full-stack-interview/types";
 
 class movieController {
 
@@ -9,11 +9,14 @@ class movieController {
     try {
         const parseResult = PaginationQuerySchema.safeParse(req.query);
         if (!parseResult.success) {
-            errorResponse(res, 'Invalid query', 400)
-        }else{
-            const { q, page, pageSize } = parseResult.data;
-            const data = await listMovies(q, page, pageSize);
-            successResponse(res, data, 200, { page: page, pageSize: page });
+          // get first error message.
+        const message = parseResult.error.issues[0]?.message  ?? 'Invalid query';
+            errorResponse(res, message , 400)
+        }
+        else {
+            const params = parseResult.data as PaginationQuery;
+            const data = await listMovies(params);
+            successResponse(res, data, 200, { page: params.page, pageSize: params.page });
         }
     } catch (error: unknown) {
         errorResponse(res, error);
