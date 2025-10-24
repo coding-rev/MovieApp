@@ -50,7 +50,6 @@ export const metricsMiddleware: express.RequestHandler = (req, res, next) => {
 
 // Metrics endpoint handler
 export const metricsHandler: express.RequestHandler = async ( req, res) => {
-  console.log("I was here some");
   res.setHeader('Content-Type', register.contentType);
   res.end(await register.metrics())
 }

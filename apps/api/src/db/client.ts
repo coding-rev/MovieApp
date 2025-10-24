@@ -24,3 +24,17 @@ export const shutdown = async () => {
 
 process.on('SIGINT', shutdown);
 process.on('SIGTERM', shutdown);
+
+// Unhandled Promise Rejection
+process.on("unhandledRejection", (reason, promise) => {
+  console.error("Unhandled Rejection at:", promise, 'reason:', reason);
+  // Don't exit the process, log and continue
+});
+
+// Uncaught Exception
+process.on("uncaughtException", (error) => {
+  console.error("Uncaught Exception:", error);
+
+  // Shutdown
+  shutdown();
+})
