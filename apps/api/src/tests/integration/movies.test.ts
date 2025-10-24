@@ -23,18 +23,24 @@ describe('Integration Tests - Movie API', () => {
 
   it('GET /api/movies -> should list movies', async () => {
     await withTestContext(async () => {
-      await createMovie({ title: 'Matrix', year: 1999, genre: 'Action', rating: 8.7 });
+      await createMovie({
+        title: 'Matrix', year: 1999, genre: 'Action', rating: 8.7,
+        thumbnail: null
+      });
       const res = await request(app).get('/api/movies');
       expect(res.status).toBe(200);
       expect(res.body.data.length).toBeGreaterThan(0);
     });
   });
 
-  it('PUT /api/movies/:id -> should update a movie', async () => {
+  it('PATCH /api/movies/:id -> should update a movie', async () => {
     await withTestContext(async () => {
-      const movie = await createMovie({ title: 'Avatar', year: 2009, genre: 'Sci-Fi', rating: 8 });
+      const movie = await createMovie({
+        title: 'Avatar', year: 2009, genre: 'Sci-Fi', rating: 8,
+        thumbnail: null
+      });
       const res = await request(app)
-        .put(`/api/movies/${movie.id}`)
+        .patch(`/api/movies/${movie.id}`)
         .send({ rating: 8.5 });
       expect(res.status).toBe(200);
       expect(res.body.data.rating).toBe(8.5);
@@ -43,7 +49,10 @@ describe('Integration Tests - Movie API', () => {
 
   it('DELETE /api/movies/:id -> should delete a movie', async () => {
     await withTestContext(async () => {
-      const movie = await createMovie({ title: 'Titanic', year: 1997, genre: 'Romance', rating: 7.8 });
+      const movie = await createMovie({
+        title: 'Titanic', year: 1997, genre: 'Romance', rating: 7.8,
+        thumbnail: null
+      });
       const res = await request(app).delete(`/api/movies/${movie.id}`);
       expect(res.status).toBe(204);
     });
