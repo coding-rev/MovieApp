@@ -21,6 +21,17 @@
     "esModuleInterop": true,
     "resolveJsonModule": true,
     "isolatedModules": true,
+
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["*"],
+      "@components/*": ["components/*"],
+      "@hooks/*": ["hooks/*"],
+      "@lib/*": ["lib/*"],
+      "@utils/*": ["utils/*"]
+    },
+
+
     "plugins": [
       {
         "name": "next"
@@ -35,7 +46,7 @@
     "lib",
     "next-env.d.ts",
     ".next/types/**/*.ts"
-  ],
+, "components", "hooks", "lib", "utils", "types/api.d.ts"  ],
   "exclude": [
     "node_modules"
   ]
