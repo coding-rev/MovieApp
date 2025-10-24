@@ -36,7 +36,6 @@ const listMovies = async (params: PaginationQuery) => {
     const validatedOrder = order === 'desc' ? 'desc' : 'asc';
 
     // Get total count and movies in parallel
-
     const [total, movies] = await Promise.all([
         prisma.movie.count({ where }),
         prisma.movie.findMany({
@@ -48,8 +47,15 @@ const listMovies = async (params: PaginationQuery) => {
 
     ]);
 
+    const totalPages = Math.ceil(total / pageSize);
 
-    return movies;
+    return {
+        movies,
+        total,
+        totalPages,
+        page,
+        pageSize
+    };;
 };
 
 export { listMovies };
