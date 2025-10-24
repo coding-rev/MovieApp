@@ -7,7 +7,6 @@ import swaggerUi from 'swagger-ui-express';
 import redoc from 'redoc-express';
 import { swaggerSpec } from '@/config/swagger.js';
 
-
 export function createApp(): Express {
     const app = express();
 

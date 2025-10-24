@@ -8,8 +8,7 @@ config({ path: path.resolve(process.cwd(), envFile) });
 const envSchema = z.object({
   NODE_ENV: z.enum(['development', 'production', 'test']).default('development'),
   PORT: z.string().regex(/^\d+$/).transform(Number).default('4000'),
-  DATABASE_URL: z.string().url(),
-  DB_PROVIDER: z.enum(['postgresql', 'sqlite'])
+  DATABASE_URL: z.string().url()
 });
 
 const parsed = envSchema.safeParse(process.env);

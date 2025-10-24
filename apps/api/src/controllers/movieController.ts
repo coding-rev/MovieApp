@@ -15,8 +15,8 @@ class movieController {
         }
         else {
             const params = parseResult.data as PaginationQuery;
-            const data = await listMovies(params);
-            successResponse(res, data, 200, { page: params.page, pageSize: params.page });
+            const {movies, ...rest} = await listMovies(params);
+            successResponse(res, movies, 200, {...rest});
         }
     } catch (error: unknown) {
         errorResponse(res, error);

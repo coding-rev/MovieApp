@@ -3,6 +3,9 @@ import { Response } from 'express';
 interface Pagination {
   page?: number;
   pageSize?: number;
+  total: number;
+  totalPages: number;
+
 }
 
 export const successResponse = <T>(
