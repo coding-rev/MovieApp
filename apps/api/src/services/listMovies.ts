@@ -8,10 +8,10 @@ const listMovies = async (params: PaginationQuery) => {
 
     const where: Prisma.MovieWhereInput = {
        ...(q && {
-        title: { contains: q } 
+        title: { contains: q }
        }),
        ...(genre && {
-        genre: { contains: genre } 
+        genre: { contains: genre }
        }),
        ...(minRating) && {
         rating: {
@@ -30,7 +30,6 @@ const listMovies = async (params: PaginationQuery) => {
         where.year = { lte: maxYear }
     }
 
-
     const validSortFields = ['title', 'year', 'rating'];
     const validateSortedBy = validSortFields.includes(sortBy) ? sortBy : 'title';
     const validatedOrder = order === 'desc' ? 'desc' : 'asc';
@@ -39,10 +38,10 @@ const listMovies = async (params: PaginationQuery) => {
     const [total, movies] = await Promise.all([
         prisma.movie.count({ where }),
         prisma.movie.findMany({
-        where,
-        skip: (page - 1) * pageSize,
-        take: pageSize,
-        orderBy: { [validateSortedBy]: validatedOrder }
+            where,
+            skip: (page - 1) * pageSize,
+            take: pageSize,
+            orderBy: { [validateSortedBy]: validatedOrder }
     })
 
     ]);

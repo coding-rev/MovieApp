@@ -54,7 +54,6 @@ describe('Integration Tests - Movie API with Filters/Sorting/Pagination', () => 
         .get('/api/movies')
         .query({ page: 1, pageSize: 2 });
       expect(res.status).toBe(200);
-      console.log('body: ', res.body)
       expect(res.body.total).toBeGreaterThan(0);
       expect(res.body.totalPages).toBeGreaterThan(0);
       expect(res.body.data.length).toBeLessThanOrEqual(2);

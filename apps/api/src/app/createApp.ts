@@ -6,11 +6,8 @@ import { loggerMiddleware } from '@/middleware/logger';
 import swaggerUi from 'swagger-ui-express';
 import redoc from 'redoc-express';
 import { swaggerSpec } from '@/docs/swagger';
+import { env } from "@/config/env";
 
-
-const allowedOrigins = [
-  "http://localhost:3000"
-];
 
 export function createApp(): Express {
     const app = express();
@@ -19,13 +16,13 @@ export function createApp(): Express {
         origin: function(origin, callback) {
             // allow requests with no origin (like mobile apps or curl)
             if (!origin) return callback(null, true);
-            if (allowedOrigins.indexOf(origin) === -1) {
+            if (env.CORS_ALLOWED_ORIGINS.indexOf(origin) === -1) {
             const msg = `The CORS policy for this site does not allow access from the specified Origin.`;
             return callback(new Error(msg), false);
             }
             return callback(null, true);
         },
-        credentials: false // if you need cookies or auth headers
+        credentials: false // set true; if cookies or auth headers needed 
     }));
     app.use(express.json());  
     app.use(loggerMiddleware);
