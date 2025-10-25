@@ -1,15 +1,17 @@
-"use client";
-
 import React from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
+import { useParams } from "next/navigation";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { RefreshCcw } from "lucide-react";
 import { useMovies } from "@/hooks/Queries/useMovies";
-import { MovieCreate, movieCreateSchema } from '@full-stack-interview/types'
+import Dialog from '@/components/ui/Dialog';
+import { toast } from "react-hot-toast";
+import { movieUpdateSchema, MovieUpdate } from '@full-stack-interview/types'
 
 
-export default function AdminPage() {
-  const {createMovie} = useMovies();
+export default function UpdateMovie({open, movie, close}: {open:boolean, movie: any, close: (refetch?:boolean)=>void}) {
+    const {updateMovie} = useMovies();
+    const params = useParams();
   const [thumbnailPreview, setThumbnailPreview] = React.useState<string>("");
 
   const {
@@ -18,8 +20,15 @@ export default function AdminPage() {
     reset,
     watch,
     formState: { errors },
-  } = useForm<MovieCreate>({
-    resolver: zodResolver(movieCreateSchema),
+  } = useForm<MovieUpdate>({
+    resolver: zodResolver(movieUpdateSchema),
+    defaultValues: {
+      title: movie?.title || "",
+      genre: movie?.genre || "",
+      year: movie?.year || new Date().getFullYear(),
+      rating: movie?.rating || 0,
+      thumbnail: movie?.thumbnail || "",
+    },
   });
 
   // Watch thumbnail field for preview updates
@@ -30,26 +39,26 @@ export default function AdminPage() {
     }
   }, [thumbnailValue]);
 
-  const onSubmit: SubmitHandler<MovieCreate> = (data) => {
+  const onSubmit: SubmitHandler<MovieUpdate> = (data) => {
     console.log("Form Data:", data);
-    createMovie.mutate(data, {
+    updateMovie.mutate({id:params.id as string, input:data}, {
       onSuccess: ()=>{
         reset();
         setThumbnailPreview("");
+        toast.success("Movie updated successfully!");
+        close(true);
+      },onError: (err)=>{
+        toast.error("Failed to update movie.");
+        console.log("Update Error:", err);
       }
     });
   };
 
-  return (
-    <div className="w-full max-w-2xl mx-auto flex flex-col gap-8 py-10 text-white">
-      {/* Header */}
-      <section className="flex items-center justify-between text-center border-b pb-4">
-        <h1 className="text-2xl font-bold">Admin Dashboard</h1>
-        <p className="text-gray-400 text-sm">Manage and add new movies</p>
-      </section>
 
-      {/* Form Section */}
-      <section className="rounded-lg w-full p-6 bg-transparent border border-gray-700">
+
+    return <Dialog open={!!open} close={close} content={<div className='w-[500px] max-w-lg p-6 flex flex-col gap-4'>
+        <h2 className='text-2xl font-bold'>Update Movie - {movie?.title}</h2>
+        <p></p>
         <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col items-center gap-6" >
           {/* Thumbnail Preview */}
           {thumbnailPreview && (
@@ -72,7 +81,7 @@ export default function AdminPage() {
             <input
               type="url"
               {...register("thumbnail")}
-              className="w-full h-10 bg-transparent text-white border border-white px-4 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full h-10 border text-black px-4 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
               placeholder="Enter thumbnail URL"
             />
             {errors.thumbnail && (
@@ -88,7 +97,7 @@ export default function AdminPage() {
             <input
               type="text"
               {...register("title")}
-              className="w-full h-10 bg-transparent text-white border border-white px-4 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full h-10 border text-black px-4 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
               placeholder="Enter movie title"
             />
             {errors.title && (
@@ -104,7 +113,7 @@ export default function AdminPage() {
             <input
               type="text"
               {...register("genre")}
-              className="w-full h-10 bg-transparent text-white border border-white px-4 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full h-10 border text-black px-4 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
               placeholder="Enter movie genre"
             />
             {errors.genre && (
@@ -123,7 +132,7 @@ export default function AdminPage() {
               type="number"
               step="0.1"
               {...register("rating", { valueAsNumber: true })}
-              className="w-full h-10 bg-transparent text-white border border-white px-4 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full h-10 border text-black px-4 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
               placeholder="Enter rating"
             />
             {errors.rating && (
@@ -139,7 +148,7 @@ export default function AdminPage() {
             <input
               type="number"
               {...register("year", { valueAsNumber: true })}
-              className="w-full h-10 bg-transparent text-white border border-white px-4 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full h-10 border text-black px-4 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
               placeholder="Enter release year"
             />
             {errors.year && (
@@ -154,10 +163,8 @@ export default function AdminPage() {
             type="submit"
             className="w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition"
           >
-            Save Movie
+            {updateMovie.isPending ? "Updating..." : "Update Movie"}
           </button>
         </form>
-      </section>
-    </div>
-  );
+    </div>} />
 }

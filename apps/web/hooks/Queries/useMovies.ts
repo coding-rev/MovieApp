@@ -39,7 +39,7 @@ export function useMovies() {
 
   const updateMovie = useMutation({
     mutationFn: async ({id, input,}: {id: string; input: MovieUpdateInput; }) => {
-      const res = await axiosInstance.put(`/movies/${id}`, input);
+      const res = await axiosInstance.patch(`/movies/${id}`, input);
       return res.data.data;
     },
     onSuccess: () => {
@@ -57,11 +57,20 @@ export function useMovies() {
     },
   });
 
+  const getGenres = useQuery({
+    queryKey: ["genres"],
+    queryFn: async () => {
+      const res = await axiosInstance.get("/genres");
+      return res.data.data;
+    },
+  });
+
   return {
     listMovies,
     getMovie,
     createMovie,
     updateMovie,
     deleteMovie,
+    getGenres,
   };
 }

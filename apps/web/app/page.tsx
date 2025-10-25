@@ -1,21 +1,20 @@
 'use client';
 
-import MovieCard from "@/components/movies/MovieCard";
-import MovieGrid from "@/components/movies/MovieGrid";
 import Link from "next/link";
 import { useMovies } from "@/hooks/Queries/useMovies";
-import { Bell, ChevronDown, Play, Flame, Swords, Smile, Shrimp, VenusAndMars, Atom, Clipboard, ListFilter, Funnel, ChevronLeft, ChevronRight } from "lucide-react";
+import { Bell, ChevronDown, Play, ListFilter, Funnel, ChevronLeft, ChevronRight } from "lucide-react";
 import ContentWrapper from "@/components/common/ContentWrapper";
 import MovieListVisualization from '@/components/movies/MovieListVisualization';
 
 export default function Page() {
-  const { listMovies } = useMovies();
+  const { listMovies, getGenres } = useMovies();
   const { data: movies, isLoading, error } = listMovies("page=1&pageSize=12");
+  const { data: genres } = getGenres;
 
   if (isLoading) return <p>Loading movies...</p>;
   if (error) return <p>Failed to load movies.</p>;
 
-  console.log("Movie data:", movies);
+  console.log("Movie genres:", genres);
 
   return (
     <ContentWrapper content={
@@ -40,16 +39,16 @@ export default function Page() {
 
           {/* User Profile Picture */}
           <div className="size-12 rounded-full overflow-hidden overflow-hidden">
-            <img src="https://randomuser.me/api/portraits/men/1.jpg" alt="User avatar" className="w-full h-full object-cover"/>
+            <img src="https://avatars.githubusercontent.com/u/66572915?v=4" alt="User avatar" className="w-full h-full object-cover"/>
           </div>
 
           {/* Active User */}
           <div className="flex items-center gap-2">
             <span className="flex flex-col">
-              <p className="text-sm">Manuel.O</p>
+              <p className="text-sm">Emmanuel</p>
               <small className="text-xs">Premium</small>
             </span>
-            <ChevronDown className="size-4"/>
+            {/* <ChevronDown className="size-4"/> */}
           </div>
         </section>
       </header>
@@ -97,38 +96,9 @@ export default function Page() {
         <span className="flex items-center gap-2">View All <ChevronDown className="size-4"/></span>
         <div className="w-full flex items-center gap-4 overflow-x-auto py-2">
           {
-            [
-              {
-                genre: "Trending",
-                icon: (props: any) => <Flame {...props} />
-              },
-              {
-                genre: "Action",
-                icon: (props: any) => <Swords {...props} />,
-              },
-              {
-                genre: "Comedy",
-                icon: (props: any) => <Smile {...props} />,
-              },
-              {
-                genre: "Horror",
-                icon: (props: any) => <Shrimp {...props} />,
-              },
-              {
-                genre: "Romance",
-                icon: (props: any) => <VenusAndMars {...props} />,
-              },
-              {
-                genre: "Sci-Fi",
-                icon: (props: any) => <Atom {...props} />,
-              },
-              {
-                genre: "Drama",
-                icon: (props: any) => <Clipboard {...props} />,
-              }
-            ].map((g, idx)=><button className="flex items-center gap-2 px-8 h-14 min-w-[150px] bg-white/10 text-white rounded-full hover:bg-white/20 transition" key={`genre-btn-${idx}`}>
-              <g.icon className="size-5 mr-2"/>
-              <span>{g.genre}</span>
+            genres.map((g:any, idx:any)=><button className="flex items-center gap-2 px-8 h-14 min-w-[150px] bg-white/10 text-white text-center rounded-full hover:bg-white/20 transition" key={`genre-btn-${idx}`}>
+              {/* <g.icon className="size-5 mr-2"/> */}
+              {g||''}
             </button>)
           }
         </div>
@@ -151,7 +121,7 @@ export default function Page() {
           </div>
           <div className="rounded-full h-12 bg-black px-6 flex items-center gap-4 text-sm border">
             <button><ListFilter className="size-4"/></button>
-            Filter
+              Filter
             <button><Funnel className="size-4"/></button>
           </div>
         </div>

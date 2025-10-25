@@ -23,7 +23,7 @@ function CellComponent({
     const movie = movies[movieIndex];
     return (
         <div style={style} className="flex justify-center p-2">
-        <MovieCard movie={movie} />
+            <MovieCard movie={movie} />
         </div>
     );
 }
