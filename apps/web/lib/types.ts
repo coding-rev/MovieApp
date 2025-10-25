@@ -11,6 +11,7 @@ export interface MovieInput {
   year: number;
   genre: string;
   rating: number;
+  thumbnail?: string;
 }
 
 export interface MovieUpdateInput {
