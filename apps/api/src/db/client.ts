@@ -1,5 +1,7 @@
-import { PrismaClient } from '../../prisma/prisma';
-export { Prisma } from '../../prisma/prisma';
+// import { PrismaClient } from '../../prisma/prisma';
+// export { Prisma } from '../../prisma/prisma';
+import { PrismaClient } from '../../prisma/prisma_pg';
+export { Prisma } from '../../prisma/prisma_pg';
 import { env } from '@/config/env';
 
 export const prisma = new PrismaClient({
