@@ -11,8 +11,9 @@
     "build": "npm run generate && npx prisma generate && tsc -p tsconfig.json",
     "start": "node dist/server.js",
     "typecheck": "tsc -p tsconfig.json",
-    "db:seed": "prisma db push && tsx prisma/seed.ts",
-    "generate": "npx prisma migrate deploy --schema=./prisma/schema_pg.prisma"
+    "db:seed-dev": "prisma db push && tsx ./prisma/seed.ts",
+    "db:seed-prod": "prisma db push --schema=./prisma/schema_pg.prisma && tsx prisma/seed_pg.ts",
+    "generate-prod": "npx prisma generate --schema=./prisma/schema_pg.prisma"
   },
   "dependencies": {
     "@full-stack-interview/types": "file:../../packages/types",

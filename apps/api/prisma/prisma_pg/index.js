@@ -87,6 +87,9 @@ Prisma.NullTypes = {
  * Enums
  */
 exports.Prisma.TransactionIsolationLevel = makeStrictEnum({
+  ReadUncommitted: 'ReadUncommitted',
+  ReadCommitted: 'ReadCommitted',
+  RepeatableRead: 'RepeatableRead',
   Serializable: 'Serializable'
 });
 
@@ -102,6 +105,11 @@ exports.Prisma.MovieScalarFieldEnum = {
 exports.Prisma.SortOrder = {
   asc: 'asc',
   desc: 'desc'
+};
+
+exports.Prisma.QueryMode = {
+  default: 'default',
+  insensitive: 'insensitive'
 };
 
 exports.Prisma.NullsOrder = {
@@ -124,7 +132,7 @@ const config = {
       "value": "prisma-client-js"
     },
     "output": {
-      "value": "/Users/emmanuelowusu/Documents/FullStackInterview/apps/api/prisma/prisma",
+      "value": "/Users/emmanuelowusu/Documents/FullStackInterview/apps/api/prisma/prisma_pg",
       "fromEnvVar": null
     },
     "config": {
@@ -138,11 +146,11 @@ const config = {
       }
     ],
     "previewFeatures": [],
-    "sourceFilePath": "/Users/emmanuelowusu/Documents/FullStackInterview/apps/api/prisma/schema.prisma",
+    "sourceFilePath": "/Users/emmanuelowusu/Documents/FullStackInterview/apps/api/prisma/schema_pg.prisma",
     "isCustomOutput": true
   },
   "relativeEnvPaths": {
-    "rootEnvPath": "../../.env",
+    "rootEnvPath": null,
     "schemaEnvPath": "../../.env"
   },
   "relativePath": "..",
@@ -151,8 +159,7 @@ const config = {
   "datasourceNames": [
     "db"
   ],
-  "activeProvider": "sqlite",
-  "postinstall": false,
+  "activeProvider": "postgresql",
   "inlineDatasources": {
     "db": {
       "url": {
@@ -161,8 +168,8 @@ const config = {
       }
     }
   },
-  "inlineSchema": "generator client {\n  provider = \"prisma-client-js\"\n  output   = \"prisma\"\n}\n\ndatasource db {\n  provider = \"sqlite\"\n  url      = env(\"DATABASE_URL\")\n}\n\nmodel Movie {\n  id        String  @id @default(cuid())\n  title     String\n  year      Int\n  genre     String\n  rating    Float\n  thumbnail String?\n}\n",
-  "inlineSchemaHash": "e5733f04ea12c93eac9567a6ca28b3dae4f1e89d574c93c438eab9666c884932",
+  "inlineSchema": "generator client {\n  provider = \"prisma-client-js\"\n  output   = \"./prisma_pg\"\n}\n\ndatasource db {\n  provider = \"postgresql\"\n  url      = env(\"DATABASE_URL\")\n}\n\nmodel Movie {\n  id        String  @id @default(cuid())\n  title     String\n  year      Int\n  genre     String\n  rating    Float\n  thumbnail String?\n}\n",
+  "inlineSchemaHash": "afe05c257ab288325e24c709c38df7a56289b0310a09affb473836ddb181d7bf",
   "copyEngine": true
 }
 
@@ -171,8 +178,8 @@ const fs = require('fs')
 config.dirname = __dirname
 if (!fs.existsSync(path.join(__dirname, 'schema.prisma'))) {
   const alternativePaths = [
-    "prisma/prisma",
-    "prisma",
+    "prisma/prisma_pg",
+    "prisma_pg",
   ]
   
   const alternativePath = alternativePaths.find((altPath) => {
@@ -202,7 +209,7 @@ Object.assign(exports, Prisma)
 
 // file annotations for bundling tools to include these files
 path.join(__dirname, "libquery_engine-darwin-arm64.dylib.node");
-path.join(process.cwd(), "prisma/prisma/libquery_engine-darwin-arm64.dylib.node")
+path.join(process.cwd(), "prisma/prisma_pg/libquery_engine-darwin-arm64.dylib.node")
 // file annotations for bundling tools to include these files
 path.join(__dirname, "schema.prisma");
-path.join(process.cwd(), "prisma/prisma/schema.prisma")
+path.join(process.cwd(), "prisma/prisma_pg/schema.prisma")
