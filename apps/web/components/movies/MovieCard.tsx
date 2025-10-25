@@ -24,14 +24,6 @@ export default function MovieCard({movie}:{movie:any}) {
                     alt={movie.title} 
                     className="size-full object-cover hover:scale-105 transition-transform duration-300 ease-in-out "
                 />
-                {/* <video 
-                    src={previewVideo} 
-                    autoPlay 
-                    muted 
-                    playsInline
-                    loop 
-                    className="size-full object-cover absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
-                /> */}
             </div>
             <div className="flex flex-col w-full">
                 <div className="flex items-baseline justify-between">

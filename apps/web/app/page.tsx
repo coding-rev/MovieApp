@@ -6,6 +6,7 @@ import Link from "next/link";
 import { useMovies } from "@/hooks/Queries/useMovies";
 import { Bell, ChevronDown, Play, Flame, Swords, Smile, Shrimp, VenusAndMars, Atom, Clipboard, ListFilter, Funnel, ChevronLeft, ChevronRight } from "lucide-react";
 import ContentWrapper from "@/components/common/ContentWrapper";
+import MovieListVisualization from '@/components/movies/MovieListVisualization';
 
 export default function Page() {
   const { listMovies } = useMovies();
@@ -157,11 +158,12 @@ export default function Page() {
       </section>
 
       
-      <MovieGrid>
+      {/* <MovieGrid >
         {movies?.map((m) => (
-          <MovieCard key={`movie-${m.id}`} movie={m} />
+          <MovieCard key={`movie-${m.id}`} movie={movies} />
         ))}
-      </MovieGrid>
+      </MovieGrid> */}
+      <MovieListVisualization movies={movies || []} columnCount={5} />
     </main>
     }/>
   );
