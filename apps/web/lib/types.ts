@@ -8,6 +8,16 @@ export interface Movie {
   thumbnail: string;
 }
 
+export interface MoviesResponse {
+  data: Movie[];
+  page: number;
+  pageSize: number;
+  success: boolean;
+  total: number;
+  totalPages: number;
+}
+
+
 export interface MovieInput {
   title: string;
   year: number;
@@ -33,17 +43,3 @@ export interface Filters {
   order: 'asc' | 'desc';
 }
 
-// Api
-export interface ApiError {
-  status: number;
-  message: string;
-}
-
-export interface ApiResponse<T> {
-  data: T;
-  message?: string;
-}
-
-export type MoviesResponse = ApiResponse<Movie[]>;
-
-export type MovieResponse = ApiResponse<Movie>;

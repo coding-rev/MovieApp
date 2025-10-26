@@ -7,21 +7,43 @@ import ContentWrapper from "@/components/common/ContentWrapper";
 import MovieGrid from '@/components/movies/MovieGrid';
 import Header from "@/components/common/Header";
 import FilterBar from "@/components/movies/FilterBar";
+import Pagination from "@/components/ui/Pagination";
 import SearchInput from "@/components/ui/SearchInput";
 import { useSearchParams } from 'next/navigation';
+import LoadingSkeleton from "@/components/ui/LoadingSkeleton";
+import useMain from "@/hooks/useMain";
+
 
 export default function Page() {
+  const {innerwidth} = useMain()
   const { listMovies, getGenres } = useMovies();
   const searchParams = useSearchParams();
   const [filterQuery, setFilterQuery] = React.useState<string>('page=1&pageSize=12');
-  const { data: movies, isLoading, error, refetch } = listMovies(filterQuery);
+  const { data, isLoading, error, refetch } = listMovies(filterQuery);
   const { data: genres } = getGenres;
+  const [movies, setMovies] = React.useState<any>(null);
 
   React.useEffect(() => {
-    const params = searchParams.toString();
-    const query = params ? `&${params}` : '';
-    setFilterQuery(`page=1&pageSize=12${query}`);
-  }, [searchParams]);
+    if (data) {
+      setMovies(data?.data ?? []);
+    }
+  }, [data]);
+  
+React.useEffect(() => {
+  // Make a copy of searchParams so we can mutate it
+  const params = new URLSearchParams(searchParams.toString());
+
+  // Add defaults if missing
+  if (!params.has("page")) params.set("page", "1");
+  if (!params.has("pageSize")) params.set("pageSize", "15");
+
+  // Convert back to query string
+  const finalQuery = params.toString() ? `&${params.toString()}` : "";
+
+  // Update filterQuery
+  setFilterQuery(finalQuery);
+}, [searchParams]);
+
 
   React.useEffect(() => {
     refetch();
@@ -33,11 +55,10 @@ export default function Page() {
   return (
     <ContentWrapper content={
       <main className="w-full flex flex-col gap-3 text-white">
-      
       <Header/>
 
-      <section className="w-full flex gap-6">
-        <div className="h-[400px] min-w-[500px] rounded-2xl relative overflow-hidden">
+      <section className="w-full flex lg:flex-row flex-col gap-6 px-5 lg:px-0">
+        <div className="h-[400px] lg:w-auto w-full min-w-full lg:min-w-[500px] rounded-2xl relative overflow-hidden">
           <div className="absolute size-full top-0 left-0">
             <img src="https://veredneta.com/wp-content/uploads/2022/10/Peaky-Blinders-Header-1024x576.webp" alt="" className="size-full object-cover" />
           </div>
@@ -79,7 +100,7 @@ export default function Page() {
         <span className="flex items-center gap-2">View All <ChevronDown className="size-4"/></span>
         <div className="w-full flex items-center gap-4 overflow-x-auto py-2">
           {
-            genres.map((g:any, idx:any)=><button className="flex items-center gap-2 px-8 h-14  bg-white/10 text-white text-center rounded-full hover:bg-white/20 transition" key={`genre-btn-${idx}`}>
+            genres.map((g:any, idx:any)=><button className="flex items-center gap-2 px-8 h-14 text-nowrap  bg-white/10 text-white text-center rounded-full hover:bg-white/20 transition" key={`genre-btn-${idx}`}>
               {g||''}
             </button>)
           }
@@ -90,16 +111,7 @@ export default function Page() {
         <div className="w-full flex items-center justify-between">
           <div className="flex flex-col gap-2">
             <h3 className="text-2xl font-semibold">Recommended Movies</h3>
-            <div className="flex items-center gap-2">
-              <span></span>
-              <button className="size-10 rounded-full flex items-center justify-center bg-white/20 hover:bg-white hover:text-white">
-                <ChevronLeft className="size-4"/>
-              </button>
-              <button className="size-10 rounded-full flex items-center justify-center bg-white/20 hover:bg-white hover:text-white">
-                <ChevronRight className="size-4"/>
-              </button>
-              <span>1-50 out of 23,039</span>
-            </div>
+            <Pagination total={data?.total || 0} totalPages={data?.totalPages || 0} page={data?.page ?? 1} pageSize={data?.pageSize ?? 5}/>
           </div>
 
           <aside className="flex items-center gap-4">
@@ -114,7 +126,15 @@ export default function Page() {
 
         </div>
       </section>
-      <MovieGrid movies={movies || []} columnCount={5} />
+      {
+        isLoading ? <LoadingSkeleton/> : 
+        <MovieGrid movies={movies || []} columnCount={
+          innerWidth > 1200 ? 5 : 
+          innerWidth > 992 ? 4 :
+          innerWidth > 768 ? 3 :
+          innerWidth > 576 ? 2 : 1
+        } />
+      }
     </main>
     }/>
   );

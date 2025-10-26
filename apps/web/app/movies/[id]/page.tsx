@@ -16,8 +16,8 @@ export default function MoviesDetails() {
 
     const { getMovie, deleteMovie } = useMovies();
     const { data: movie, isLoading, error, refetch } = getMovie(movieId);
-    const [deleteState, setDeleteState] = React.useState<any>(null)
-    const [update, setUpdate] = React.useState<any>(null)
+    const [deleteState, setDeleteState] = React.useState<any>(null);
+    const [update, setUpdate] = React.useState<any>(null);
 
     const handleDelete = () => {
         deleteMovie.mutate(movieId, {
@@ -44,13 +44,13 @@ export default function MoviesDetails() {
                 <h2 className="text-2xl font-bold">Delete Movie</h2>
             </aside>
             <p>Are you sure you want to delete the movie <b>{deleteState?.title}</b>? This action cannot be undone.</p>
-            <div className="w-full flex items-center justify-end gap-4">
+            <div className="w-full flex items-center justify-end gap-4 text-white">
                 <button onClick={()=>setDeleteState(null)} className="px-4 py-2 border rounded-lg">Cancel</button>
                 <button onClick={()=>handleDelete()} className="px-4 py-2 bg-red-600 text-white rounded-lg">{deleteMovie.isPending ? 'Deleting...' : 'Delete'}</button>
             </div>
         </div>} />
 
-        <div className='w-full flex flex-col items-center'>
+        <div className='w-full flex flex-col items-center text-white'>
             <Header/>
             <section className="w-full flex flex-col gap-4">
                 <div className="w-full flex items-center justify-between gap-3 py-3">
