@@ -9,6 +9,7 @@
     "build": "npm run -w packages/types build && npm run -w apps/api build && npm run -w apps/web build",
     "start": "npm run -w apps/api start & npm run -w apps/web start",
     "typecheck": "npm run -w packages/types typecheck && npm run -w apps/api typecheck && npm run -w apps/web typecheck",
-    "db:seed": "npm run -w apps/api db:seed"
+    "db:seed-dev": "npm run -w apps/api db:seed-dev",
+    "db:seed-prod": "npm run -w apps/api db:seed-prod"
   }
 }
