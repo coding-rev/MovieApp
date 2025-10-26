@@ -1,12 +1,19 @@
-// import { PrismaClient } from '../../prisma/prisma';
-// export { Prisma } from '../../prisma/prisma';
+import { env } from '@/config/env';
+import { PrismaClient as PrismaClientSql } from '../../prisma/prisma';
+export { Prisma as PrismaSql } from '../../prisma/prisma';
 import { PrismaClient } from '../../prisma/prisma_pg';
 export { Prisma } from '../../prisma/prisma_pg';
-import { env } from '@/config/env';
 
-export const prisma = new PrismaClient({
-  datasources: { db: { url: env.DATABASE_URL } },
-});
+
+let prisma: PrismaClient|PrismaClientSql;
+
+if (env.USE_DB === 'production') {
+  prisma = new PrismaClient();
+} else {
+  prisma = new PrismaClientSql();
+}
+
+export { prisma };
 
 export async function connectDB() {
   try {

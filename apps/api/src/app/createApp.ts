@@ -16,7 +16,7 @@ export function createApp(): Express {
     app.use(helmet());
     
     // Rate Limiting
-    // app.use(limiter);
+    app.use(limiter);
     
     // CORS
     app.use(cors({
