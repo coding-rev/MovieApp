@@ -1,5 +1,5 @@
 import express from 'express';
-import { movie } from '@/controllers/movieController';
+import { movie } from '@/controllers/index';
 import { validate } from '@/middleware/validationHandler';
 import { movieCreateSchema, movieUpdateSchema } from '@full-stack-interview/types'
 

@@ -2,7 +2,7 @@ import { describe, it, beforeAll, afterAll, expect } from 'vitest';
 import { prisma } from '@/db/client'
 import { withTestContext } from '@/tests/testContext';
 import { createMovie, listMovies, updateMovie, deleteMovie } from '@/services/index';
-import { PaginationQuerySchema, PaginationQuery } from "@full-stack-interview/types";
+import { PaginationQuerySchema } from "@full-stack-interview/types";
 
 
 describe('Unit Tests - Movie Services', () => {
