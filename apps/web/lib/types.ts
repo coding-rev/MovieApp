@@ -1,16 +1,29 @@
+// Movies
 export interface Movie {
   id: string;
   title: string;
   year: number;
   genre: string;
   rating: number;
+  thumbnail: string;
 }
+
+export interface MoviesResponse {
+  data: Movie[];
+  page: number;
+  pageSize: number;
+  success: boolean;
+  total: number;
+  totalPages: number;
+}
+
 
 export interface MovieInput {
   title: string;
   year: number;
   genre: string;
   rating: number;
+  thumbnail?: string;
 }
 
 export interface MovieUpdateInput {
@@ -20,16 +33,13 @@ export interface MovieUpdateInput {
   rating?: number;
 }
 
-export interface ApiError {
-  status: number;
-  message: string;
+// Filters
+export interface Filters {
+  genre: string;
+  minRating: number | '';
+  minYear: number | '';
+  maxYear: number | '';
+  sortBy: string;
+  order: 'asc' | 'desc';
 }
 
-export interface ApiResponse<T> {
-  data: T;
-  message?: string;
-}
-
-export type MoviesResponse = ApiResponse<Movie[]>;
-
-export type MovieResponse = ApiResponse<Movie>;

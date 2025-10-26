@@ -1,22 +1,20 @@
 import express from 'express';
-import { movie } from '@/controllers/movieController';
-import { movieCreateValidator, movieUpdateValidator } from '@/validator/movieValidator';
-import { validationChecker } from '@/validator/validationHandler';
+import { movie } from '@/controllers/index';
+import { validate } from '@/middleware/validationHandler';
+import { movieCreateSchema, movieUpdateSchema } from '@full-stack-interview/types'
 
 const movieRouter = express.Router();
 
 movieRouter.post(
     '/',
-    movieCreateValidator,
-    validationChecker,
+    validate(movieCreateSchema),
     movie.create
 );
 movieRouter.get('/', movie.listMovies);
 movieRouter.get('/:id', movie.get);
 movieRouter.patch(
     '/:id',
-    movieCreateValidator,
-    movieUpdateValidator,
+    validate(movieUpdateSchema),
     movie.update
 );
 movieRouter.delete('/:id', movie.delete);

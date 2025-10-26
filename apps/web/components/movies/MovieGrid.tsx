@@ -1,11 +1,44 @@
 'use client';
 
-import React from 'react'
+import React from 'react';
+import { Grid, type CellComponentProps } from 'react-window';
+import MovieCard from '@/components/movies/MovieCard';
+import { Movie } from '@/lib/types';
 
-export default function MovieGrid({children}:{children: React.ReactNode}) {
-  return (
-      <ul className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-6">
-        {children}
-    </ul>
-  )
+interface MovieGridProps {
+    movies: Movie[];
+    columnCount?: number;
+}
+
+function CellComponent({movies, columnIndex, rowIndex, style}: CellComponentProps<{ movies: Movie[] }>) {
+    const { length } = movies;
+    const movieIndex = rowIndex * 4 + columnIndex;
+    if (movieIndex >= length) return null;
+
+    const movie = movies[movieIndex];
+    return (
+        <div style={style} className="flex justify-center p-2">
+            <MovieCard movie={movie} />
+        </div>
+    );
+}
+
+export default function MovieGrid({ movies, columnCount = 4 }: MovieGridProps) {
+    const rowCount = Math.ceil(movies.length / columnCount);
+    const columnWidth = 220;
+    const rowHeight = 320;
+
+    return (
+        <div className="rounded-lg overflow-hidden h-[600px] w-full">
+        <Grid
+            cellComponent={CellComponent}
+            cellProps={{ movies }}
+            columnCount={columnCount}
+            columnWidth={columnWidth}
+            rowCount={rowCount}
+            rowHeight={rowHeight}
+            className="w-full h-full"
+        />
+        </div>
+    );
 }

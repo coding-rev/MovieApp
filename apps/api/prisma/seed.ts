@@ -1,6 +1,6 @@
 import { PrismaClient } from "@prisma/client";
 
-const prisma = new PrismaClient();
+export const prisma = new PrismaClient();
 
 const movies = [
   { title: "The Matrix", year: 1999, genre: "Sci-Fi", rating: 8.7, thumbnail: "https://media.istockphoto.com/id/1125877063/de/foto/gemischte-rassen-frau-singt-und-spielt-gitarre.jpg?s=612x612&w=0&k=20&c=ZK40SJceWcX-fsVxo5Rytwu_xpHfha7i5QNVDCkh0qY="},

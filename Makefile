@@ -12,7 +12,7 @@ help:
 	@echo "Make targets:"
 	@echo "  install     - Install all workspace dependencies"
 	@echo "  env         - Copy example env files for API and Web"
-	@echo "  seed        - Initialize/seed the SQLite database"
+	@echo "  seed        - Initialize/seed the SQLite/Postgres database"
 	@echo "  dev         - Run types, API, and Web in watch/dev mode"
 	@echo "  dev-api     - Run only the API in dev mode"
 	@echo "  dev-web     - Run only the Web app in dev mode"

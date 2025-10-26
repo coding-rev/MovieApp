@@ -1,7 +1,7 @@
 import "./globals.css";
 import type { ReactNode } from "react";
 import TanStackQueryClientProvider from "./provider";
-import { env } from "@/lib/env";
+import ToasterProvider from "./ToastProvider";
 
 export default function RootLayout({ children }: { children: ReactNode }) {
   return (
@@ -14,6 +14,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
           <div className="w-full min-h-full mx-auto flex flex-col items-center px-[100px] py-8 backdrop-blur-sm bg-gray-950">
             {children}
           </div>
+          <ToasterProvider/>
         </TanStackQueryClientProvider>
       </body>
     </html>

@@ -2,7 +2,7 @@
 
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { axiosInstance } from "@/lib/axiosInstance";
-import { Movie, MovieInput, MovieUpdateInput } from "@/lib/types";
+import { MoviesResponse, Movie, MovieInput, MovieUpdateInput } from "@/lib/types";
 import { ENDPOINTS } from "@/lib/endpoints";
 
 
@@ -10,11 +10,11 @@ export function useMovies() {
   const queryClient = useQueryClient();
 
   const listMovies = (filters?: string) =>
-    useQuery<Movie[]>({
+    useQuery<MoviesResponse>({
       queryKey: ["movies", filters ?? {}],
       queryFn: async () => {
         const res = await axiosInstance.get(ENDPOINTS.movies(filters));
-        return res.data.data;
+        return res.data as MoviesResponse;
       },
     });
 
@@ -39,7 +39,7 @@ export function useMovies() {
 
   const updateMovie = useMutation({
     mutationFn: async ({id, input,}: {id: string; input: MovieUpdateInput; }) => {
-      const res = await axiosInstance.put(`/movies/${id}`, input);
+      const res = await axiosInstance.patch(`/movies/${id}`, input);
       return res.data.data;
     },
     onSuccess: () => {
@@ -57,11 +57,20 @@ export function useMovies() {
     },
   });
 
+  const getGenres = useQuery({
+    queryKey: ["genres"],
+    queryFn: async () => {
+      const res = await axiosInstance.get("/genres");
+      return res.data.data;
+    },
+  });
+
   return {
     listMovies,
     getMovie,
     createMovie,
     updateMovie,
     deleteMovie,
+    getGenres,
   };
 }

@@ -13,24 +13,14 @@ const sampleImages = [
     'https://i.pinimg.com/736x/c8/e7/88/c8e788d2f95c97d1d9dcdbac8c31549e.jpg'
 ]
 
-const previewVideo = "https://cdn.pixabay.com/video/2022/02/12/107492-678970856_large.mp4";
-
 export default function MovieCard({movie}:{movie:any}) {
     const router = useRouter();
     return <li onClick={()=>router.push(routes.moviesDetail(movie.id))} key={movie.id} className="rounded w-full flex flex-col gap-2">
             <div className="w-full h-[200px] rounded-xl overflow-hidden group relative cursor-pointer">
                 <img 
-                    src={sampleImages[Math.floor(Math.random() * sampleImages.length)]} 
+                    src={movie?.thumbnail || sampleImages[Math.floor(Math.random() * sampleImages.length)]} 
                     alt={movie.title} 
-                    className="size-full object-cover hover:scale-105 transition-transform duration-300 ease-in-out group-hover:opacity-0"
-                />
-                <video 
-                    src={previewVideo} 
-                    autoPlay 
-                    muted 
-                    playsInline
-                    loop 
-                    className="size-full object-cover absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+                    className="size-full object-cover hover:scale-105 transition-transform duration-300 ease-in-out "
                 />
             </div>
             <div className="flex flex-col w-full">
