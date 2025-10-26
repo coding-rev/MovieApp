@@ -1,3 +1,4 @@
+// Movies
 export interface Movie {
   id: string;
   title: string;
@@ -22,6 +23,17 @@ export interface MovieUpdateInput {
   rating?: number;
 }
 
+// Filters
+export interface Filters {
+  genre: string;
+  minRating: number | '';
+  minYear: number | '';
+  maxYear: number | '';
+  sortBy: string;
+  order: 'asc' | 'desc';
+}
+
+// Api
 export interface ApiError {
   status: number;
   message: string;

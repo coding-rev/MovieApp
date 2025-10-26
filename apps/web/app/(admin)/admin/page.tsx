@@ -31,7 +31,6 @@ export default function AdminPage() {
   }, [thumbnailValue]);
 
   const onSubmit: SubmitHandler<MovieCreate> = (data) => {
-    console.log("Form Data:", data);
     createMovie.mutate(data, {
       onSuccess: ()=>{
         reset();

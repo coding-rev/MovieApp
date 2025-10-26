@@ -1,7 +1,6 @@
 import "./globals.css";
 import type { ReactNode } from "react";
 import TanStackQueryClientProvider from "./provider";
-import { env } from "@/lib/env";
 import ToasterProvider from "./ToastProvider";
 
 export default function RootLayout({ children }: { children: ReactNode }) {

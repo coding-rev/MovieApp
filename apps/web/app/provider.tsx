@@ -9,8 +9,8 @@ const TanStackQueryClientProvider = ({ children }: { children: ReactNode }) => {
       new QueryClient({
         defaultOptions: {
           queries: {
-            staleTime: 1000 * 60 * 5, // keep for 5min
-            gcTime: 1000 * 60 * 10, // 10min cache time
+            staleTime: 1000 * 60 * 2, // keep for 5min
+            gcTime: 1000 * 60 * 1, // 1min cache time
             refetchOnMount: false,
             refetchOnWindowFocus: false,
           },

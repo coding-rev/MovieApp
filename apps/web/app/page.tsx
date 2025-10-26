@@ -1,22 +1,35 @@
 'use client';
 
-import Link from "next/link";
+import React from "react";
 import { useMovies } from "@/hooks/Queries/useMovies";
-import { Bell, ChevronDown, Play, ListFilter, Funnel, ChevronLeft, ChevronRight } from "lucide-react";
+import { ChevronDown, Play, ListFilter, Funnel, ChevronLeft, ChevronRight } from "lucide-react";
 import ContentWrapper from "@/components/common/ContentWrapper";
-import MovieListVisualization from '@/components/movies/MovieListVisualization';
+import MovieGrid from '@/components/movies/MovieGrid';
 import Header from "@/components/common/Header";
+import FilterBar from "@/components/movies/FilterBar";
+import SearchInput from "@/components/ui/SearchInput";
+import { useSearchParams } from 'next/navigation';
 
 export default function Page() {
   const { listMovies, getGenres } = useMovies();
-  const { data: movies, isLoading, error } = listMovies("page=1&pageSize=12");
+  const searchParams = useSearchParams();
+  const [filterQuery, setFilterQuery] = React.useState<string>('page=1&pageSize=12');
+  const { data: movies, isLoading, error, refetch } = listMovies(filterQuery);
   const { data: genres } = getGenres;
+
+  React.useEffect(() => {
+    const params = searchParams.toString();
+    const query = params ? `&${params}` : '';
+    setFilterQuery(`page=1&pageSize=12${query}`);
+  }, [searchParams]);
+
+  React.useEffect(() => {
+    refetch();
+  }, [filterQuery]);
+
 
   if (isLoading) return <p>Loading movies...</p>;
   if (error) return <p>Failed to load movies.</p>;
-
-  console.log("Movie genres:", genres);
-
   return (
     <ContentWrapper content={
       <main className="w-full flex flex-col gap-3 text-white">
@@ -66,8 +79,7 @@ export default function Page() {
         <span className="flex items-center gap-2">View All <ChevronDown className="size-4"/></span>
         <div className="w-full flex items-center gap-4 overflow-x-auto py-2">
           {
-            genres.map((g:any, idx:any)=><button className="flex items-center gap-2 px-8 h-14 min-w-[150px] bg-white/10 text-white text-center rounded-full hover:bg-white/20 transition" key={`genre-btn-${idx}`}>
-              {/* <g.icon className="size-5 mr-2"/> */}
+            genres.map((g:any, idx:any)=><button className="flex items-center gap-2 px-8 h-14  bg-white/10 text-white text-center rounded-full hover:bg-white/20 transition" key={`genre-btn-${idx}`}>
               {g||''}
             </button>)
           }
@@ -89,21 +101,20 @@ export default function Page() {
               <span>1-50 out of 23,039</span>
             </div>
           </div>
-          <div className="rounded-full h-12 bg-black px-6 flex items-center gap-4 text-sm border">
-            <button><ListFilter className="size-4"/></button>
-              Filter
-            <button><Funnel className="size-4"/></button>
-          </div>
+
+          <aside className="flex items-center gap-4">
+            <SearchInput/>
+            <div className="rounded-full h-12 bg-black px-6 flex items-center gap-4 text-sm border">
+              <button><ListFilter className="size-4"/></button>
+              <FilterBar setFilterQuery={(query:string)=>{
+                setFilterQuery(prev=>`${prev}&${query}`);
+              }}/>
+            </div>
+          </aside>
+
         </div>
       </section>
-
-      
-      {/* <MovieGrid >
-        {movies?.map((m) => (
-          <MovieCard key={`movie-${m.id}`} movie={movies} />
-        ))}
-      </MovieGrid> */}
-      <MovieListVisualization movies={movies || []} columnCount={5} />
+      <MovieGrid movies={movies || []} columnCount={5} />
     </main>
     }/>
   );
