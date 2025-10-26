@@ -6,7 +6,6 @@ A simple **Node.js + React (Next.js)** fullstack application demonstrating backe
 * [General info](#general-info)
 * [Technologies](#technologies)
 * [Setup](#setup)
-* [Commands](#commands)
 * [App Endpoints](#app-endpoints)
 * [API Documentation](#api-documentation)
 * [Testing](#testing)
@@ -50,6 +49,7 @@ It was developed as part of a **fullstack engineering assessment** to demonstrat
 
 
 ---
+
 
 ## App Endpoints
 
@@ -107,15 +107,36 @@ npm run test
 ![Payload Size](./docs_images/perf_4.png)
 ![Response Body](./docs_images/perf_5.png)
 
+## Monitoring Metrics
+Sample monitoring metrics from prometheus (local test)
+
+### 🧠 1. CPU Usage
+- Shows how much CPU time the app consumes.
+![cpu-usage-image](./docs_images/monitoring_cpu.png)
+
+### 💾 2. Memory Usage
+- Tracks app’s current RAM consumption.
+![memory-usage-image](./docs_images/monitoring_memory.png)
+
+### 🌐 3. HTTP Request Rate
+- Number of incoming HTTP requests per second.
+![http-request-rate-image](./docs_images/monitoring_http.png)
+
+### ⚡ 4. Request Latency (95th Percentile)
+- Shows response time at the 95th percentile (user experience metric).
+![request-latency-image](./docs_images/monitoring_percentile.png)
+
+
+
 ## ⚙️ Design Decisions
 - **Import Structure:** Configured **absolute imports** instead of relative imports for cleaner module references.
 
 ### 🧠 Backend Decisions
 
-- **Database:** Using **SQLite** with transactional context and fixtures for testing.
+- **Database:** Using transactional context and fixtures for testing.
 - **Teardown Management:** Implemented context manager for teardown operations during tests.
-- **Schema Enhancement:** Added a `thumbnail` attribute to the movie schema for better UI visualization.
-- **Filter Consistency:** Split the `year` filter into `minYear` and `maxYear` to support filtering within a year range and maintain consistency.
+- **Schema Enhancement:** Added a `thumbnail` attribute to the movie schema for better UI/UX visualization.
+- **Filter Consistency:** Splitted the `year` filter into `minYear` and `maxYear` to support filtering within a year range and maintain consistency.
 - **Service-Oriented Backend** Each domain feature (e.g., movies) has separate routes, controllers, and services for clean separation of concerns.
 
 ---
@@ -124,8 +145,8 @@ npm run test
 
 - **Data Handling & State Management:**  
   - Fetching movie details directly from the backend on the detail page.  
-  - Responses are cached using to minimize redundant network requests and improve perceived performance.  
-  - Cached data has a short TTL to balance speed and freshness.  
+  - - Responses are cached using to minimize redundant network requests and improve perceived performance.  
+  - - Cached data has a short TTL to balance speed and freshness.
   - Application state is managed locally where appropriate, while shared/global state is minimal to reduce complexity.
 
 - **Data Fetching Strategy:**  
@@ -136,12 +157,35 @@ npm run test
   - Built UI using **[shadcn/ui](https://shadcn.dev/)** for consistent, prebuilt components.  
   - Icons implemented via **[lucide-react](https://lucide.dev/)** for lightweight, scalable SVG icons.
 
-- **Imports:**  
-  - Configured **absolute imports** instead of relative imports for cleaner code organization.
-
-
 
 ## Trade-offs and Next Steps
+
+The following improvements and features are planned to enhance the Movie App, improve scalability, security, and maintainability, and align with industry best practices:
+
+### 1. **Backend Enhancements**
+- **Caching Layer:**  
+  - Implement server-side caching (e.g., Redis) to reduce repeated database queries for frequently accessed endpoints.  
+  - Introduce query-level caching and cache invalidation for list and detail endpoints.
+- **Role-Based Access Control (RBAC):**  
+  - Add **User models** with roles such as `admin`, `editor`, and `viewer`.  
+  - Restrict certain endpoints and mutations based on roles to improve security and multi-tenant support.
+- **Authentication & Authorization:**  
+  - Implement **JWT authentication** for stateless API security.  
+  - Integrate **OAuth2 / OpenID Connect** for single sign-on (SSO) with popular providers (Google, GitHub, Microsoft).  
+  - Refresh token mechanism for improved session management.
+- **Advanced Query Features:**  
+  - Consider polyglot persistence to handle read & write heavy features respectively.  
+  - Implement **db indexing** for faster reads.
+
+### 2. **Frontend Enhancements**
+- **Optimized Data Fetching & Management:**  
+  - Implement Redux for predictable global state management, ensuring consistent data flow across pages and components.
+- **User Roles & Permissions:**  
+  - Hide or restrict UI components based on user roles.  
+  - Admin dashboard for managing movies, users, and analytics.
+- **UI/UX Improvements:**  
+  - Add more precise **skeleton loaders** and transition animations for smoother experience.  
+  - Implement full responsive design for tablet and mobile devices.
 
 
 ### Follow-up Priorities

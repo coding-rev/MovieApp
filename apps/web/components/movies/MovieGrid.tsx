@@ -2,7 +2,7 @@
 
 import React from 'react';
 import { Grid, type CellComponentProps } from 'react-window';
-import MovieCard from './MovieCard';
+import MovieCard from '@/components/movies/MovieCard';
 import { Movie } from '@/lib/types';
 
 interface MovieGridProps {

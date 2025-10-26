@@ -28,7 +28,8 @@
       "@components/*": ["components/*"],
       "@hooks/*": ["hooks/*"],
       "@lib/*": ["lib/*"],
-      "@utils/*": ["utils/*"]
+      "@utils/*": ["utils/*"],
+      "@tests/*": ["tests/*"]
     },
 
 

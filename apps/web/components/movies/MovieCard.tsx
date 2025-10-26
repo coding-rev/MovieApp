@@ -13,8 +13,6 @@ const sampleImages = [
     'https://i.pinimg.com/736x/c8/e7/88/c8e788d2f95c97d1d9dcdbac8c31549e.jpg'
 ]
 
-const previewVideo = "https://cdn.pixabay.com/video/2022/02/12/107492-678970856_large.mp4";
-
 export default function MovieCard({movie}:{movie:any}) {
     const router = useRouter();
     return <li onClick={()=>router.push(routes.moviesDetail(movie.id))} key={movie.id} className="rounded w-full flex flex-col gap-2">

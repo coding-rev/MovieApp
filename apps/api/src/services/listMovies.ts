@@ -33,20 +33,21 @@ const listMovies = async (params: PaginationQuery) => {
     const validSortFields = ['title', 'year', 'rating'];
     const validateSortedBy = validSortFields.includes(sortBy) ? sortBy : 'title';
     const validatedOrder = order === 'desc' ? 'desc' : 'asc';
+    const validatedPageSize = pageSize > 20 ? 20 : pageSize;
 
     // Get total count and movies in parallel
     const [total, movies] = await Promise.all([
         prisma.movie.count({ where }),
         prisma.movie.findMany({
             where,
-            skip: (page - 1) * pageSize,
-            take: pageSize,
+            skip: (page - 1) * validatedPageSize,
+            take: validatedPageSize,
             orderBy: { [validateSortedBy]: validatedOrder }
     })
 
     ]);
 
-    const totalPages = Math.ceil(total / pageSize);
+    const totalPages = Math.ceil(total / validatedPageSize);
 
     return {
         movies,
