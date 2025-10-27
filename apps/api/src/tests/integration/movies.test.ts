@@ -15,9 +15,9 @@ describe('Integration Tests - Movie API', () => {
     await withTestContext(async () => {
       const res = await request(app)
         .post('/api/movies')
-        .send({ title: 'Inception', year: 2010, genre: 'Sci-Fi', rating: 9 });
+        .send({ title: 'TestingMovie', year: 2010, genre: 'Sci-Fi', rating: 9 });
       expect(res.status).toBe(201);
-      expect(res.body.data.title).toBe('Inception');
+      expect(res.body.data.title).toBe('TestingMovie');
     });
   });
 

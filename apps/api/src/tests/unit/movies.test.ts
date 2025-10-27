@@ -2,7 +2,7 @@ import { describe, it, beforeAll, afterAll, expect } from 'vitest';
 import { prisma } from '@/db/client'
 import { withTestContext } from '@/tests/testContext';
 import { createMovie, listMovies, updateMovie, deleteMovie } from '@/services/index';
-import { PaginationQuerySchema } from "@full-stack-interview/types";
+import { PaginationQuery, PaginationQuerySchema } from "@full-stack-interview/types";
 
 
 describe('Unit Tests - Movie Services', () => {
@@ -22,7 +22,7 @@ describe('Unit Tests - Movie Services', () => {
       await createMovie({ title: 'Matrix', year: 1999, genre: 'Action', rating: 8.7, thumbnail: null });
       const parseResult = PaginationQuerySchema.safeParse({ page: "1", pageSize: "10" });
       const params = parseResult.data;
-      const res = await listMovies(params);
+      const res = await listMovies(params as PaginationQuery);
       expect(res.movies.length).toBeGreaterThan(0);
     });
   });

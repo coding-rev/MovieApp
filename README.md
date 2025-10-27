@@ -103,7 +103,6 @@ Once the backend server is running:
 
 ## Testing
 ### 🧭 Running the Tests
-- At `/apps/api` or `/apps/web` run
 ```bash
 # Run all tests (unit, integration, and performance)
 npm run test
