@@ -39,6 +39,7 @@
       }
     ]
   },
+    "references": [{ "path": "../../packages/types" }], 
   "include": [
     "*.ts",
     "*.tsx",

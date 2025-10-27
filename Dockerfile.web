@@ -6,7 +6,6 @@ WORKDIR /app
 
 # Copy package files from root and all workspaces
 COPY package*.json ./
-COPY apps/api/package*.json ./apps/api/
 COPY apps/web/package*.json ./apps/web/
 COPY packages/types/package*.json ./packages/types/
 
@@ -16,13 +15,9 @@ RUN npm ci
 # Copy source code
 COPY . .
 
-# Build the types package first, then the API
+# Build the types package first, then the web app
 RUN npm run -w packages/types build
-RUN npm run -w apps/api build
-
-# Generate Prisma client
-WORKDIR /app/apps/api
-RUN npx prisma generate
+RUN npm run -w apps/web build
 
 # Production stage
 FROM node:20-alpine AS production
@@ -31,24 +26,24 @@ WORKDIR /app
 
 # Copy package files
 COPY package*.json ./
-COPY apps/api/package*.json ./apps/api/
+COPY apps/web/package*.json ./apps/web/
 COPY packages/types/package*.json ./packages/types/
 
 # Install production dependencies only
 RUN npm ci --omit=dev
 
-# Copy built application and generated Prisma client
+# Copy built Next.js application
 COPY --from=builder /app/packages/types/dist ./packages/types/dist
 COPY --from=builder /app/packages/types/package.json ./packages/types/
-COPY --from=builder /app/apps/api/dist ./apps/api/dist
-COPY --from=builder /app/apps/api/node_modules/.prisma ./apps/api/node_modules/.prisma
-COPY --from=builder /app/apps/api/prisma ./apps/api/prisma
+COPY --from=builder /app/apps/web/.next ./apps/web/.next
+COPY --from=builder /app/apps/web/public ./apps/web/public
+COPY --from=builder /app/apps/web/next.config.* ./apps/web/
 
-# Set working directory to API app
-WORKDIR /app/apps/api
+# Set working directory to web app
+WORKDIR /app/apps/web
 
-# Expose port (adjust if your API uses a different port)
-EXPOSE 4000
+# Expose port
+EXPOSE 3000
 
-# Start the application
-CMD ["node", "dist/server.js"]
+# Start Next.js in production mode
+CMD ["npm", "start"]

@@ -31,6 +31,7 @@ export default function FilterBar({setFilterQuery}: {setFilterQuery: (query: str
 
   const resetFilters = () => {
     setFilters(defaultFilters);
+    router.push('/');
   };
 
   const applyFilters = () => {

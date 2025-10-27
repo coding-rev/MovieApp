@@ -56,3 +56,5 @@ export const MovieQueryParamSchema = z.object({
 
 export type MovieQueryParams = z.infer<typeof MovieQueryParamSchema>;
 
+
+export {};
