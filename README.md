@@ -12,6 +12,7 @@ A simple **Node.js + React (Next.js)** fullstack application demonstrating backe
 * [Monitoring Metrics](#monitoring-metrics)
 * [Design Decisions](#design-decisions)
 * [Trade-offs and Next Steps](#trade-offs-and-next-steps)
+* [Author](#author)
 
 ## General info
 This project consists of:
@@ -47,15 +48,11 @@ It was developed as part of a **fullstack engineering assessment** to demonstrat
    ```bash
    npm install
    ```
-3. Seed the database:
-   ```bash
-   npm run db:seed
-   ```
-4. Start development servers (API and Web):
+3. Start development servers (API and Web):
    ```bash
    npm run dev
    ```
-5. Open the Web app: `http://localhost:3000`
+4. Open the Web app: `http://localhost:3000`
 
 ### Make usage (optional but convenient)
 
