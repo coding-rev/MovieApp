@@ -12,6 +12,7 @@ A simple **Node.js + React (Next.js)** fullstack application demonstrating backe
 * [Monitoring Metrics](#monitoring-metrics)
 * [Design Decisions](#design-decisions)
 * [Trade-offs and Next Steps](#trade-offs-and-next-steps)
+* [Author](#author)
 
 ## General info
 This project consists of:
@@ -42,10 +43,32 @@ It was developed as part of a **fullstack engineering assessment** to demonstrat
 
 ## Setup
 
-### Installation on Linux and Mac OS
-* [Follow this guide](https://help.github.com/articles/fork-a-repo) to clone or fork the repository.
-* [Install Docker](https://docs.docker.com/engine/install/) if you prefer containerized setup.
-* Create an `.env` file using the provided `.env.example` template and set environment variables:
+1. Prerequisites: Node 20.x, npm 10+
+2. Install dependencies:
+   ```bash
+   npm install
+   ```
+3. Start development servers (API and Web):
+   ```bash
+   npm run dev
+   ```
+4. Open the Web app: `http://localhost:3000`
+
+### Make usage (optional but convenient)
+
+This repository includes a Makefile with handy shortcuts that mirror the npm scripts. If you have `make` installed, you can use:
+
+- `make install`: Install all dependencies across workspaces.
+- `make env`: Create local env files from examples (`apps/api/.env`, `apps/web/.env.local`).
+- `make seed`: Push Prisma schema and seed the SQLite database.
+- `make dev`: Run types, API, and Web in watch/dev mode.
+- `make dev-api` / `make dev-web`: Run only API or only Web in dev mode.
+- `make build`: Build types, API, and Web.
+- `make start`: Start the built API and Web (production mode).
+- `make typecheck`: Type-check all workspaces.
+- `make clean`: Remove build artifacts.
+
+Tip: run `make help` to see all available targets.
 
 
 ---
@@ -80,7 +103,7 @@ Once the backend server is running:
 
 ## Testing
 ### 🧭 Running the Tests
-
+- At `/apps/api` or `/apps/web` run
 ```bash
 # Run all tests (unit, integration, and performance)
 npm run test

@@ -4,7 +4,7 @@ import {  PaginationQuery } from "@full-stack-interview/types";
 
 const listMovies = async (params: PaginationQuery) => {
 
-    const { page, pageSize, minRating, minYear, maxYear, genre, q, sortBy, order } = params; 
+    const { page, pageSize, minRating, minYear, maxYear, genre, q, sortBy = 'title', order = 'asc' } = params; 
 
     const where: Prisma.MovieWhereInput = {
        ...(q && {

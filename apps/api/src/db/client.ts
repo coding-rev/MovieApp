@@ -1,19 +1,25 @@
-// import { PrismaClient } from '../../prisma/prisma';
-// export { Prisma } from '../../prisma/prisma';
-import { PrismaClient } from '../../prisma/prisma_pg';
-export { Prisma } from '../../prisma/prisma_pg';
 import { env } from '@/config/env';
+import { PrismaClient } from '@prisma/client';
+export { Prisma } from '@prisma/client';
 
-export const prisma = new PrismaClient({
-  datasources: { db: { url: env.DATABASE_URL } },
-});
+// In dev, reuse a single instance across HMR restarts
+const globalForPrisma = globalThis as unknown as { prisma?: PrismaClient };
+
+export const prisma =
+  globalForPrisma.prisma ??
+  new PrismaClient({
+    log: process.env.NODE_ENV === 'production' ? ['error'] : ['query', 'error', 'warn'],
+  });
+
+if (process.env.NODE_ENV !== 'production') globalForPrisma.prisma = prisma;
+
 
 export async function connectDB() {
   try {
     await prisma.$connect();
     console.log('✅ Database connection has been established');
   } catch (err) {
-    console.error('❌ Unable to connect to the database:');
+    console.error('❌ Unable to connect to the database:', {err});
     process.exit(1);
   }
 }

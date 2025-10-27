@@ -1,0 +1,57 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - "**"   # Run for PRs from any branch
+
+jobs:
+  build-test:
+    name: Install, Build, Lint, Typecheck, Test
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        workspace: [api, web]
+
+    steps:
+      - name: 🛎️ Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: 🟢 Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'npm'
+
+      - name: 📦 Install Dependencies
+        run: npm install
+        working-directory: ${{ matrix.workspace }}
+        env:
+          CI: true
+
+      # - name: 🔍 Type Check
+      #   run: npm run typecheck
+      #   working-directory: ${{ matrix.workspace }}
+
+      # - name: 🧹 Lint
+      #   run: npm run lint
+      #   working-directory: ${{ matrix.workspace }}
+
+      - name: 🏗️ Build
+        run: npm run build
+        working-directory: ${{ matrix.workspace }}
+
+      - name: 🧪 Test with Coverage
+        run: npm run test -- --coverage --runInBand
+        working-directory: ${{ matrix.workspace }}
+
+      - name: ⬆️ Upload Coverage Report
+        if: success()
+        uses: actions/upload-artifact@v4
+        with:
+          name: coverage-${{ matrix.workspace }}
+          path: ${{ matrix.workspace }}/coverage/

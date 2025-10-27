@@ -1,0 +1,23 @@
+global:
+  scrape_interval: 15s
+  evaluation_interval: 15s
+  external_labels:
+    monitor: 'fullstack-monitor'
+
+scrape_configs:
+  # Scrape configuration for the API service
+  - job_name: 'api'
+    static_configs:
+      - targets: ['api:4000']
+        labels:
+          service: 'api'
+          environment: 'production'
+    metrics_path: '/metrics'
+    scrape_interval: 10s
+
+  # Scrape Prometheus itself
+  - job_name: 'prometheus'
+    static_configs:
+      - targets: ['localhost:9090']
+        labels:
+          service: 'prometheus'

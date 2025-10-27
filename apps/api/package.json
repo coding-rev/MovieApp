@@ -5,18 +5,22 @@
   "type": "module",
   "main": "dist/server.js",
   "scripts": {
-    "dev": "tsx watch ./src/server.ts",
+   "prisma:generate:dev": "cross-env NODE_ENV=development dotenv -e .env.development -- prisma generate --schema ./prisma/sqlite/schema.prisma",
+    "prisma:migrate:dev": "cross-env NODE_ENV=development dotenv -e .env.development -- prisma migrate dev --schema ./prisma/sqlite/schema.prisma",
+    "db:seed:dev": "cross-env NODE_ENV=development dotenv -e .env.development -- tsx ./prisma/seed.ts",
+    "dev": "npm run prisma:generate:dev && npm run prisma:migrate:dev && npm run db:seed:dev && tsx watch ./src/server.ts",
+
     "test": "cross-env NODE_ENV=test vitest run --coverage",
     "test:watch": "cross-env NODE_ENV=test vitest watch",
-    "build": "npm run generate && npx prisma generate && tsc -p tsconfig.json",
-    "start": "node dist/server.js",
     "typecheck": "tsc -p tsconfig.json",
-    "db:seed-dev": "prisma db push && tsx ./prisma/seed.ts",
-    "db:seed-prod": "prisma db push --schema=./prisma/schema_pg.prisma && tsx prisma/seed_pg.ts",
-    "generate-prod": "npx prisma generate --schema=./prisma/schema_pg.prisma"
+     "prisma:generate:prod": "cross-env NODE_ENV=production dotenv -e .env.production -- prisma generate --schema ./prisma/postgres/schema.prisma",
+    "prisma:migrate:prod": "cross-env NODE_ENV=production dotenv -e .env.production -- prisma migrate deploy --schema ./prisma/postgres/schema.prisma",
+    "db:seed:prod": "cross-env NODE_ENV=production dotenv -e .env.production -- tsx src/seed.ts",
+    "build": "npm run prisma:generate:prod && tsc -b tsconfig.build.json",
+    "start": "npm run prisma:migrate:prod && node dist/server.js"
   },
   "dependencies": {
-    "@full-stack-interview/types": "file:../../packages/types",
+  "@full-stack-interview/types": "0.0.0",
     "@prisma/client": "^6.18.0",
     "cors": "^2.8.5",
     "dotenv": "^16.4.5",
@@ -40,6 +44,7 @@
     "@types/swagger-ui-express": "^4.1.8",
     "@vitest/coverage-v8": "^4.0.0",
     "cross-env": "^10.1.0",
+    "dotenv-cli": "^10.0.0",
     "nodemon": "^3.1.10",
     "pino-pretty": "^13.1.2",
     "prisma": "^6.18.0",
