@@ -11,11 +11,13 @@
   ],
   "scripts": {
     "dev": "npm run -w packages/types dev & npm run -w apps/api dev & npm run -w apps/web dev",
+    "prod": "npm run -w packages/types dev & npm run -w apps/api prod & npm run -w apps/web dev",
     "build": "npm run -w packages/types build && npm run -w apps/api build && npm run -w apps/web build",
     "start": "npm run -w apps/api start & npm run -w apps/web start",
     "typecheck": "npm run -w packages/types typecheck && npm run -w apps/api typecheck && npm run -w apps/web typecheck",
     "db:seed-dev": "npm run -w apps/api db:seed-dev",
-    "db:seed-prod": "npm run -w apps/api db:seed-prod"
+    "db:seed-prod": "npm run -w apps/api db:seed-prod",
+    "test": "npm run -w apps/api test:prod & npm run -w apps/web test"
   },
   "devDependencies": {
     "dotenv-cli": "^10.0.0"

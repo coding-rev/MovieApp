@@ -1,4 +1,3 @@
-import { env } from '@/config/env';
 import { PrismaClient } from '@prisma/client';
 export { Prisma } from '@prisma/client';
 

@@ -14,5 +14,7 @@ export default defineConfig({
       provider: 'v8',
       reporter: ['text', 'lcov'],
     },
+    testTimeout: 20000, // 20 seconds for all tests
+    hookTimeout: 10000, // for beforeAll/afterAll hooks
   },
 });

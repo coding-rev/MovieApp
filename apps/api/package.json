@@ -5,17 +5,26 @@
   "type": "module",
   "main": "dist/server.js",
   "scripts": {
-   "prisma:generate:dev": "cross-env NODE_ENV=development dotenv -e .env.development -- prisma generate --schema ./prisma/sqlite/schema.prisma",
-    "prisma:migrate:dev": "cross-env NODE_ENV=development dotenv -e .env.development -- prisma migrate dev --schema ./prisma/sqlite/schema.prisma",
     "db:seed:dev": "cross-env NODE_ENV=development dotenv -e .env.development -- tsx ./prisma/seed.ts",
+    "db:seed:prod": "cross-env NODE_ENV=production dotenv -e .env.production -- tsx ./prisma/seed.ts",
+    
     "dev": "npm run prisma:generate:dev && npm run prisma:migrate:dev && npm run db:seed:dev && tsx watch ./src/server.ts",
+    "prod": "npm run prisma:generate:prod && npm run prisma:migrate:prod && npm run db:seed:prod && tsx watch ./src/server.ts",
 
-    "test": "cross-env NODE_ENV=test vitest run --coverage",
-    "test:watch": "cross-env NODE_ENV=test vitest watch",
+    "test:prod": "npm run prisma:generate:prod && cross-env NODE_ENV=production dotenv -e .env.production -- vitest run --coverage",
+    "test:watch:prod": "cross-env NODE_ENV=production dotenv -e .env.production -- vitest watch",
+
+    "test:dev": "npm run prisma:generate:dev &&  cross-env NODE_ENV=development dotenv -e .env.development -- vitest run --coverage",
+    "test:watch:dev": "cross-env NODE_ENV=development dotenv -e .env.development -- vitest watch",
+    
     "typecheck": "tsc -p tsconfig.json",
-     "prisma:generate:prod": "cross-env NODE_ENV=production dotenv -e .env.production -- prisma generate --schema ./prisma/postgres/schema.prisma",
+    
+    "prisma:generate:prod": "cross-env NODE_ENV=production dotenv -e .env.production -- prisma generate --schema ./prisma/postgres/schema.prisma",
     "prisma:migrate:prod": "cross-env NODE_ENV=production dotenv -e .env.production -- prisma migrate deploy --schema ./prisma/postgres/schema.prisma",
-    "db:seed:prod": "cross-env NODE_ENV=production dotenv -e .env.production -- tsx src/seed.ts",
+    
+    "prisma:generate:dev": "cross-env NODE_ENV=development dotenv -e .env.development -- prisma generate --schema ./prisma/sqlite/schema.prisma",
+    "prisma:migrate:dev": "cross-env NODE_ENV=development dotenv -e .env.development -- prisma migrate dev --schema ./prisma/sqlite/schema.prisma",
+
     "build": "npm run prisma:generate:prod && tsc -b tsconfig.build.json",
     "start": "npm run prisma:migrate:prod && node dist/server.js"
   },

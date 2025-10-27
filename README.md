@@ -52,6 +52,10 @@ It was developed as part of a **fullstack engineering assessment** to demonstrat
    ```bash
    npm run dev
    ```
+4. Start production servers (API (postgresql env) and Web):
+   ```bash
+   npm run prod
+   ```
 4. Open the Web app: `http://localhost:3000`
 
 ### Make usage (optional but convenient)
@@ -103,7 +107,6 @@ Once the backend server is running:
 
 ## Testing
 ### 🧭 Running the Tests
-- At `/apps/api` or `/apps/web` run
 ```bash
 # Run all tests (unit, integration, and performance)
 npm run test

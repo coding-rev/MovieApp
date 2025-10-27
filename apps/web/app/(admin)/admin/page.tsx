@@ -6,6 +6,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { RefreshCcw } from "lucide-react";
 import { useMovies } from "@/hooks/Queries/useMovies";
 import { MovieCreate, movieCreateSchema } from '@full-stack-interview/types'
+import toast from "react-hot-toast";
 
 
 export default function AdminPage() {
@@ -35,6 +36,7 @@ export default function AdminPage() {
       onSuccess: ()=>{
         reset();
         setThumbnailPreview("");
+        toast.success("Movie created successfully!");
       }
     });
   };
