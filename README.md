@@ -1,6 +1,6 @@
 # Movie Project (Node + React)
 
-A simple **Node.js + React (Next.js)** fullstack application demonstrating backend API design, frontend integration, testing, and modular architecture.
+A **Node.js + React (Next.js)** fullstack application demonstrating backend API design, frontend integration, testing, and modular architecture.
 
 ## Table of contents
 * [General info](#general-info)
